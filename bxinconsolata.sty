@@ -1,0 +1,41 @@
+% bxinconsolata.sty
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bxinconsolata}[2013/04/20 v0.2]
+
+%% preparations
+\def\bxqic@pkgname{bxinconsolata}
+\def\bxqic@error{\PackageError\bxqic@pkgname}
+
+%---------------------------------------
+
+%% check if fi4 family is already loaded
+\def\bxqic@next#1{%
+  \expandafter\ifx\csname #1+fi4\endcsname\relax\else
+    \bxqic@error{Inconsolata already in use}%
+      {Font definition for Inconsolata is already done and
+       cannot be revoked\MessageBreak
+       (at least) safely. Package loading will be aborted.}
+  \expandafter\endinput\fi\relax
+}
+\bxqic@next{T1}
+\bxqic@next{TS1}
+
+%% load inconsolata package.
+\RequirePackageWithOptions{inconsolata}
+
+%---------------------------------------
+
+\def\bxqic@next#1#2{%
+  \DeclareFontFamily{#1}{fi4}{\hyphenchar\font=\m@ne}%
+  \DeclareFontShape{#1}{fi4}{m}{n}{%
+    <->\fifour@scaled bxincons-r-#2}{}
+}
+\expandafter\ifx\csname fifour@scaled\endcsname\relax
+  \let\fifour@scaled\@empty
+\fi
+\bxqic@next{T1}{t1}
+\bxqic@next{TS1}{ts1}
+
+%---------------------------------------
+\endinput
+%% EOF
